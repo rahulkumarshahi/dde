@@ -1,0 +1,37 @@
+1. Look into stocks, index (then options) data for volume and price (3 months ahead)
+2. Filter on events based calendar (hints from Barrons)
+3. Create blocks
+
+
+1. Get data stream:
+    get_data_price(ticker_id, date_st, date_end, freq)
+    get_data_volume(ticker_id, date_st, date_end, freq)
+    
+    returns
+    data in tabular (panda dataframe) etc.  
+    
+2. Apply Level-1 filters
+   a. SMA-10 filters
+   b. SMA-30 filters
+   c. RSI filters
+   d. Momentum filters
+   
+3. Apply Level-2 filters
+   a. Barrons recommendation (RSI feeds)
+   b. Semantic based recommendation (Noise space)
+   c. Economic clalendar feed
+   d. Events calendar feed
+
+4. Apply Level-3 filters
+    a. GDP data
+    b. IMF data
+    c. Cross-border trade data
+    d. Political environment data
+    
+Each of the filters have a small python snippet which have the format as :
+For example in Level-1 SMA-10 filter, e.g.: 
+  def lvl1_sma_10(data):
+          return {tabular data}
+
+  More on this later...
+  
