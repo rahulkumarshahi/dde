@@ -3,25 +3,24 @@
 
 # Algo options - 1
 
-# For any given day, for any optionable Stock (or index) give the following:
-#   a)  Price of stock
+# For any given day, for any optionable Stock (or index) we have the following:
+#   a)  Price of stock with time stamp.
 #   b)  Range of interest, e.g., 15% range [0.85 of Stock  to 1.15 of Stock price]
 #   c)  Price of options belonging to that range
 #   d)  volume of option
 #   e)  implied volatility
+# The aim is to get all the pertinent options (calls/puts) for all applicable strikes.
 
-# sample-data taken from : https://datashop.cboe.com/option-quotes-intervals-calculations
-# file name: UnderlyingOptionsIntervalsCalcs_900sec_2016-06-01.csv
-#
 #Explanation of code strucutre:
-#a) Sample Data available from CBOE site :
-#b) List of underlying (stock or index) price with date and time. 
-#    Once every 15mins. From 09:45AM till 16:15PM
-#c) Simplest way was to bundle option data separately from stock data.
-#d) Example :Take the stock price(S) at 9:45AM today. Find lo_S = 0.85*S and hi_S=1.15*S.
-#e) Take a list of all option strike price tagged with their expiration date
-#f) Use the "closest_hit" logic on lo_S (for PUTs) and hi_S (for CALLs) with the strike_list as reference.
-#
+# a) sample-data taken from : https://datashop.cboe.com/option-quotes-intervals-calculations
+# file name: UnderlyingOptionsIntervalsCalcs_900sec_2016-06-01.csv
+# b) List of underlying (stock or index) price with date and time. 
+#    This set has : Once every 15mins. From 09:45AM till 16:15PM
+# c) Simplest way was to bundle option data separately from underlying (stock or index) data.
+# d) Example :Take the stock price(S) at 9:45AM today. Find lo_S = 0.85*S and hi_S=1.15*S.
+# e) Take a list of all option strike price tagged with their expiration date
+# f) Use the "closest_hit" logic on lo_S (for PUTs) and hi_S (for CALLs) with the strike_list as reference.
+# g) Give the sorted list of all applicable expiration dates and the options data.
 
 
 import pandas as pd
@@ -37,7 +36,7 @@ underlying_hi = 1.15 # 15% higher than the current price
 def df_fromfile(file_path=None):
     file_path = (path + filename).replace('/','//')
     return pd.read_csv(file_path, sep=',')
-    #return pd.read_csv('UnderlyingOptionsIntervalsCalcs_900sec_2016-06-01.csv', sep=',')
+
             
 
 def stock_range(S, lo = underlying_lo, hi = underlying_hi):        
@@ -66,14 +65,6 @@ def datetime_options(file_path):
 def strike_list(file_path):
     df = df_fromfile(file_path)
     return sorted(list(set(df['strike'])))
-
-#def expiration_strike_type(file_path):        
-#    df = df_fromfile(file_path)
-#    return sorted(list(set(zip(df['expiration']
-#                               ,df['root']
-#                               ,df['strike']
-#                               ,df['option_type'])))
-#                               ,key=lambda x:x[0])
 
 def expiration_dates(file_path):
     df = df_fromfile(file_path)
